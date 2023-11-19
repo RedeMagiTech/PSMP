@@ -1,0 +1,26 @@
+name: "release"
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  release:
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    permissions: write-all
+    steps:
+    - uses: actions/checkout@master
+    - name: Archive Release
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'PSMP.zip'
+        exclusions: '*.git* README.md CODE_OF_CONDUCT.md LICENSE'
+    - name: Upload Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "Latest"
+        prerelease: false
+        title: "PSMP 1.18.2"
+        files: 'PSMP.zip'
